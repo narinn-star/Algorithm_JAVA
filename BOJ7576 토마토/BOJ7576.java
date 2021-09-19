@@ -1,14 +1,12 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import java.util.Queue;
 import java.util.LinkedList;
 
 public class BOJ7576 {
-	static int M,N, cnt = 0;
+	static int M, N, max = 0;
 	static int[][] tomato;
 	static boolean[][] visited;
 	
@@ -28,56 +26,65 @@ public class BOJ7576 {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		M = Integer.parseInt(st.nextToken());
 		N = Integer.parseInt(st.nextToken());
-		tomato = new int[N][M];
-		visited = new boolean[N][M];
+		M = Integer.parseInt(st.nextToken());
+		tomato = new int[M][N];
+		visited = new boolean[M][N];
 		
-		for(int i = 0; i < N; i++) {
+		for(int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < M; j++) {
+			for(int j = 0; j < N; j++) {
 				tomato[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		
-		Point p = new Point(0 ,0);
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+
+		for(int i = 0; i < M; i++) {
+			for(int j = 0; j < N; j++) {
 				if(tomato[i][j] == 1) {
-					p.x = i;
-					p.y = j;
-					queue.add(p);
+					visited[i][j] = true;
+					queue.add(new Point(i, j));
 				}
+				else if(tomato[i][j] == -1)
+					visited[i][j] = true;
 			}
 		}
-		bw.write(bfs(p) + "\n");
+		bfs();
 		
-		br.close();
-		bw.flush();
-		br.close();
+		for(int i = 0; i < M; i++) {
+			for(int j = 0; j < N; j++) {
+				if(!visited[i][j]) {
+					System.out.println(-1);
+					return;
+				}
+				if(max < tomato[i][j])
+					max = tomato[i][j];
+			}
+		}
+		System.out.println(max-1);
 		
+		br.close();		
 	}
 	
-	static int bfs(Point p) {
-		visited[p.x][p.y] = true;
-		
+	static void bfs() {	
 		while(!queue.isEmpty()) {
 			Point point = queue.poll();
+			
 			for(int i = 0; i < 4; i++) {
 				int X = point.x + x[i];
 				int Y = point.y + y[i];
+				
 				if(X >= 0 && Y >= 0 && X < M && Y < N) {
 					if(!visited[X][Y]) {
+						tomato[X][Y] = tomato[point.x][point.y] + 1;
 						visited[X][Y] = true;
-						cnt++;
+						
 						queue.add(new Point(X, Y));
 					}
 				}
 			}
 		}	
-		return cnt;
 	}
 }
