@@ -3,6 +3,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class BOJ10814 {
 	public static void main(String[] args) throws IOException {
@@ -10,13 +12,19 @@ public class BOJ10814 {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		
 		int N = Integer.parseInt(br.readLine());
-		String[][] res = new String[N][2];
+		String[] str = new String[N];
 		
 		for(int i = 0; i < N; i++) {
-			String[] str = br.readLine().split(" ");
-			for(int j = 0; j < 2; j++) {
-				res[i][j] = str[i];
-			}
+			str[i] = br.readLine();
 		}
+		
+		Arrays.sort(str, new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				int age1 = Integer.parseInt(s1.split(" ").toString());
+				int age2 = Integer.parseInt(s2.split(" ").toString());
+				
+				
+			}
+		});
 	}
 }
