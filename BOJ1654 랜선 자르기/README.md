@@ -29,7 +29,7 @@ public class BOJ1654 {
 				max = kLine[i];
 		}
 		
-		max++;									//0으로 나누어지는 것을 방지
+		max++;									//0으로 나누어지는 것 방지
 		
 		while(min < max) {
 			mid = (min + max) / 2;
