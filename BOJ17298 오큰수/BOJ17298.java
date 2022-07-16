@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class BOJ17298 {
@@ -8,33 +9,32 @@ public class BOJ17298 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
+		Stack<Integer> stack = new Stack<>();
 
 		int N = Integer.parseInt(br.readLine());
-		boolean check = false;
 		int[] arr = new int[N + 1];
+		int[] res = new int[N + 1];
 
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 
-		for (int i = 0; i < N; i++) {
-			for (int j = i + 1; j < N; j++) {
-//				if (i == N - 1) {
-//					sb.append("-1");
-//					check = true;
-//					break;
-//				}
-				if (arr[i] < arr[j]) {
-					sb.append(arr[j]).append(" ");
-					check = true;
-					break;
-				}
+		for (int i = N - 1; i >= 0; i--) {
+			while (!stack.isEmpty() && stack.peek() <= arr[i]) {
+				stack.pop();
 			}
-			if (!check)
-				sb.append("-1").append(" ");
+			if (stack.isEmpty())
+				res[i] = -1;
+			else
+				res[i] = stack.peek();
+
+			stack.push(arr[i]);
 		}
-		sb.append("-1");
-		System.out.print(sb);
+
+		for (int i = 0; i < N; i++) {
+			sb.append(res[i] + " ");
+		}
+		System.out.println(sb);
 	}
 }
