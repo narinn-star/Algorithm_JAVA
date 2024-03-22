@@ -1,4 +1,4 @@
-# [Programmers 땅따먹기]
+# [Programmers 땅따먹기] 
 
 ## 분류
 > 연습문제
