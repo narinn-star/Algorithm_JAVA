@@ -1,0 +1,81 @@
+# [1780] 종이의 개수
+
+## 분류
+> 분할 정복
+>
+> 재귀
+
+## 코드
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BOJ1780 {
+    private static int N;
+    private static int oneCnt, minusCnt, zeroCnt;
+    private static int[][] paper;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        oneCnt = 0;
+        minusCnt = 0;
+        zeroCnt = 0;
+        paper = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                paper[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        countPaper(0, 0, N);
+        System.out.println(minusCnt);
+        System.out.println(zeroCnt);
+        System.out.println(oneCnt);
+    }
+
+    private static void countPaper(int x, int y, int size) {
+        if (checkPaper(x, y, size)) {
+            if (paper[x][y] == 0) zeroCnt++;
+            else if (paper[x][y] == -1) minusCnt++;
+            else if (paper[x][y] == 1) oneCnt++;
+            return;
+        }
+
+        int newSize = size / 3;
+        for(int i = x; i < x + size; i += newSize){
+            for(int j = y; j < y + size; j += newSize){
+                countPaper(i, j, newSize);
+            }
+        }
+    }
+
+    private static boolean checkPaper(int x, int y, int size){
+        for (int i = x; i < x + size; i ++) {
+            for (int j = y; j < y + size; j ++) {
+                if (paper[i][j] != paper[x][y]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+```
+
+## 문제풀이
+
+색종이가 무조건 3^k x 3^k 크기인 것이 포인트다. 계속해서 잘라나가야하는데, 이 잘린 사이즈만큼을 재귀호출할 때 넘겨주면 된다.
+
+어제 풀었던 별찍기 19도 큰것부터 작은것으로 줄여가며 재귀를 호출하는 것이었는데, 거기서 힌트를 살짝 얻었다. 처음 입력받은 사이즈 N부터 N / 3씩 계속 줄여가며 탐색해주면 된다. 
+처음엔 checkPaper 함수를 따로 밖에 빼두지 않고 countPaper 함수 내에 넣어뒀는데, boolean 값에 오류가 있어서 바로 리턴해줄 수 있도록 따로 함수를 작성했다. 
+카운트 후에 return을 해두었기 때문에 마지막 색종이(한 변의 길이가 1인 색종이)들의 갯수를 세고 나면 함수가 정상적으로 종료된다.
+
+생각보다 재귀가 쉽지 않다는 것을 깨닫는 중. .....
