@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BOJ15663 {
+public class BOJ15664 {
     static int N, M;
     static int[] numbers, inputArr;
     static boolean[] visited;
